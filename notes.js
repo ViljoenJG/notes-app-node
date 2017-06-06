@@ -66,11 +66,5 @@ function saveNotes(notes) {
 }
 
 function noteExists(notes, title) {
-    for (let a =0; a < notes.length; a++) {
-        if (notes[a].title === title) {
-            return true;
-        }
-    }
-
-    return false;
+    return notes.some(note => note.title === title);
 }
