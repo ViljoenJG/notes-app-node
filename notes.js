@@ -9,13 +9,17 @@ const addNote = (title, body) => {
         console.log('Data file does not exist. A new data file will be created.')
     }
 
-    const note = {
-        title,
-        body
-    };
+    if (!noteExists(notes, title)) {
+        const note = {
+            title,
+            body
+        };
 
-    notes.push(note);
-    fs.writeFileSync('data/notes-data.json', JSON.stringify(notes));
+        notes.push(note);
+        fs.writeFileSync('data/notes-data.json', JSON.stringify(notes));
+    } else {
+        console.log('A note with that title already exists. Note not added.');
+    }
 };
 
 const getAllNotes = () => {
@@ -36,3 +40,13 @@ module.exports = {
     getNote,
     removeNote
 };
+
+function noteExists(notes, title) {
+    for (let a =0; a < notes.length; a++) {
+        if (notes[a].title === title) {
+            return true;
+        }
+    }
+
+    return false;
+}
