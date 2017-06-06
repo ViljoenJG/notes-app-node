@@ -2,28 +2,37 @@ const fs = require('fs');
 const _ = require('lodash');
 const yargs = require('yargs');
 
-const { addNote, removeNote, getNote, getAllNotes } = require('./notes');
+const { addNote, removeNote, getNote, getAllNotes, logNote } = require('./notes');
 
 const argv = yargs.argv;
 const command = argv._[0];
-console.log(`Command: ${ command }`);
-console.log('Yargs', argv);
+// console.log(`Command: ${ command }`);
+// console.log('Yargs', argv);
 
 if (command === 'add') {
     let note = addNote(argv.title, argv.body);
 
     if (note) {
-        console.log('Note Created.');
-        console.log('----');
-        console.log(`Title: ${ note.title }`);
-        console.log(`body: ${ note.body }`);
+        logNote('Note Created', note);
     }
 
 } else if (command === 'list') {
-    getAllNotes();
+    let notes = getAllNotes();
+
+    if (notes) {
+        notes.forEach((note, idx) => logNote(`Note ${ idx + 1}`, note));
+    } else {
+        console.log('No notes found');
+    }
 
 } else if (command === 'read') {
-    getNote(argv.title);
+    const note = getNote(argv.title);
+
+    if (note) {
+        logNote('Note found', note);
+    } else {
+        console.log('Note not found');
+    }
 
 } else if (command === 'remove') {
     if (removeNote(argv.title)) {
