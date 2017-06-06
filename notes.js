@@ -1,13 +1,7 @@
 const fs = require('fs');
 
 const addNote = (title, body) => {
-    let notes = [];
-
-    try {
-        notes = JSON.parse(fs.readFileSync('data/notes-data.json'));
-    } catch (e) {
-        console.log('Data file does not exist. A new data file will be created.')
-    }
+    let notes = fetchNotes();
 
     if (!noteExists(notes, title)) {
         const note = {
@@ -16,22 +10,30 @@ const addNote = (title, body) => {
         };
 
         notes.push(note);
-        fs.writeFileSync('data/notes-data.json', JSON.stringify(notes));
+        saveNotes(notes);
+        return note;
     } else {
         console.log('A note with that title already exists. Note not added.');
+        return null;
     }
 };
 
 const getAllNotes = () => {
-    console.log('Getting all notes');
+    return fetchNotes();
 };
 
 const getNote = title => {
     console.log('Getting note', title);
 };
 
-const removeNote = title => {
-    console.log('Removing note', title);
+const removeNote = (title) => {
+    let notes = fetchNotes();
+    let before = notes.length;
+
+    notes = notes.filter(note => note.title !== title);
+    saveNotes(notes);
+
+    return notes.length !== before;
 };
 
 module.exports = {
@@ -40,6 +42,19 @@ module.exports = {
     getNote,
     removeNote
 };
+
+function fetchNotes() {
+    try {
+        let notes = JSON.parse(fs.readFileSync('data/notes-data.json'));
+        return (notes.constructor === Array) ? notes : []
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveNotes(notes) {
+    fs.writeFileSync('data/notes-data.json', JSON.stringify(notes));
+}
 
 function noteExists(notes, title) {
     for (let a =0; a < notes.length; a++) {
