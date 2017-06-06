@@ -1,6 +1,21 @@
+const fs = require('fs');
+
 const addNote = (title, body) => {
-    console.log('Adding Note', title, body);
-    // return `Title: ${ title }. Body: ${ body }`
+    let notes = [];
+
+    try {
+        notes = JSON.parse(fs.readFileSync('data/notes-data.json'));
+    } catch (e) {
+        console.log('Data file does not exist. A new data file will be created.')
+    }
+
+    const note = {
+        title,
+        body
+    };
+
+    notes.push(note);
+    fs.writeFileSync('data/notes-data.json', JSON.stringify(notes));
 };
 
 const getAllNotes = () => {
