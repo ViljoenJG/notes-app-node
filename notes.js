@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const addNote = (title, body) => {
+module.exports.addNote = (title, body) => {
     let notes = fetchNotes();
 
     if (!noteExists(notes, title)) {
@@ -18,17 +18,17 @@ const addNote = (title, body) => {
     }
 };
 
-const getAllNotes = () => {
+module.exports.getAllNotes = () => {
     return fetchNotes();
 };
 
-const getNote = (title) => {
+module.exports.getNote = (title) => {
     let notes = fetchNotes();
     notes = notes.filter(note => note.title === title);
     return notes[0]
 };
 
-const removeNote = (title) => {
+module.exports.removeNote = (title) => {
     let notes = fetchNotes();
     let before = notes.length;
 
@@ -38,19 +38,16 @@ const removeNote = (title) => {
     return notes.length !== before;
 };
 
-const logNote = (message, note) => {
+module.exports.logNote = (message, note) => {
     console.log(message || 'Note');
     console.log('-----');
     console.log(`Title: ${note.title}\nBody: ${note.body}`);
 };
 
-module.exports = {
-    addNote,
-    getAllNotes,
-    getNote,
-    removeNote,
-    logNote
-};
+
+/***********************
+* Private methods
+* *********************/
 
 function fetchNotes() {
     try {
