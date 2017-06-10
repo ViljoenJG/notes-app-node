@@ -3,10 +3,7 @@ const fs = require('fs');
 const _ = require('lodash');
 
 const { addNote, removeNote, getNote, getAllNotes, logNote } = require('./notes');
-const commands = require('./argumentHandling');
-
-const argv = commands.getArgs();
-const command = argv._[0];
+const { command, argv } = require('./argumentHandling');
 
 if (command === 'add') {
     let note = addNote(argv.title, argv.body);

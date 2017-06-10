@@ -1,5 +1,8 @@
 const yargs = require('yargs');
 
+const usage = 'Usage: $0 <command> [options]. \nUse: $0 <command> --help for available options.';
+const demandMessage = 'ERROR: You need to specify a command to perform (add, list, read or remove).';
+
 const title = {
     describe: 'Title of note',
     demand: true,
@@ -25,10 +28,19 @@ const removeOptions = {
     title
 };
 
-const usage = 'Usage: $0 <command> [options]. \nUse: $0 <command> --help for available options.';
-const demandMessage = 'ERROR: You need to specify a command to perform (add, list, read or remove).';
+const argv = getArgs();
+const command = argv._[0];
 
-module.exports.getArgs = () => {
+module.exports = {
+    argv,
+    command
+};
+
+/******************
+* Build yargs options.
+* *****************/
+
+function getArgs() {
     return yargs
         .usage(usage)
         .demand(1, demandMessage)
@@ -39,4 +51,4 @@ module.exports.getArgs = () => {
         .help('help')
         .alias('help', 'h')
         .argv;
-};
+}
