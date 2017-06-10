@@ -1,11 +1,11 @@
+#!/usr/bin/env node
 const fs = require('fs');
 const _ = require('lodash');
-const yargs = require('yargs');
 
 const { addNote, removeNote, getNote, getAllNotes, logNote } = require('./notes');
 const commands = require('./commands');
 
-const argv = getArgs();
+const argv = commands.getArgs();
 const command = argv._[0];
 
 if (command === 'add') {
@@ -42,15 +42,4 @@ if (command === 'add') {
 
 } else {
     console.error('Command not recognised');
-}
-
-function getArgs() {
-    return yargs
-        .command(...commands.add)
-        .command(...commands.list)
-        .command(...commands.read)
-        .command(...commands.remove)
-        .help('help')
-        .alias('help', 'h')
-        .argv;
 }

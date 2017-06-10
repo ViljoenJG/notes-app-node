@@ -1,3 +1,5 @@
+const yargs = require('yargs');
+
 const title = {
     describe: 'Title of note',
     demand: true,
@@ -23,14 +25,18 @@ const removeOptions = {
     title
 };
 
-const add = ['add', 'Add a new note', addOptions];
-const read = ['read', 'Get a single note', readOptions];
-const remove = ['remove', 'Remove a note', removeOptions];
-const list = ['list', 'List all notes'];
+const usage = 'Usage: $0 <command> [options]. \nUse: $0 <command> --help for available options.';
+const demandMessage = 'ERROR: You need to specify a command to perform (add, list, read or remove).';
 
-module.exports = {
-    add,
-    list,
-    read,
-    remove
+module.exports.getArgs = () => {
+    return yargs
+        .usage(usage)
+        .demand(1, demandMessage)
+        .command('add', 'Add a new note', addOptions)
+        .command('list', 'List all notes')
+        .command('read', 'Get a single note', readOptions)
+        .command('remove', 'Remove a note', removeOptions)
+        .help('help')
+        .alias('help', 'h')
+        .argv;
 };
