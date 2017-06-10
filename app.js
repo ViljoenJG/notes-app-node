@@ -3,7 +3,7 @@ const fs = require('fs');
 const _ = require('lodash');
 
 const { addNote, removeNote, getNote, getAllNotes, logNote } = require('./notes');
-const commands = require('./commands');
+const commands = require('./argumentHandling');
 
 const argv = commands.getArgs();
 const command = argv._[0];
@@ -41,5 +41,5 @@ if (command === 'add') {
     }
 
 } else {
-    console.error('Command not recognised');
+    console.error('Command not recognised. Use --help for more information.');
 }
